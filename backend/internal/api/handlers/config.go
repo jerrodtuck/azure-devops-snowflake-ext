@@ -10,6 +10,10 @@ import (
 // HandleGetConfig returns the configuration for the frontend
 func HandleGetConfig(w http.ResponseWriter, r *http.Request) {
 	enabledTypes := config.GetEnabledDataTypes()
+	if len(enabledTypes) == 0 {
+		http.Error(w, "No enabled data types found", http.StatusInternalServerError)
+		return
+	}
 
 	var dataTypes []models.DataTypeInfo
 	for _, dt := range enabledTypes {
@@ -34,7 +38,11 @@ func HandleGetConfig(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
+}
 }
 
 // HandleGetDataTypes returns available data types
