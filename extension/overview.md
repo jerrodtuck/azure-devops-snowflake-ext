@@ -2,7 +2,7 @@
 
 A modern work item control that provides searchable dropdown fields populated with live data from Snowflake. You will need to implement the Go Backend or modify the project to use the Snowflake SQL API. For custom implementations you can reach out to me via the various contact methods on https://jerrodtuck.com
 
-![Snowflake Dropdown Demo](https://raw.githubusercontent.com/jerrodtuck/azure-devops-snowflake-ext/master/docs/demo.gif)
+![Snowflake Dropdown Demo](https://raw.githubusercontent.com/jerrodtuck/azure-devops-snowflake-ext/master/docs/demo.png)
 
 ## Key Features
 
