@@ -19,6 +19,13 @@ import (
 func HandleSearch(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	dataType := vars["type"]
+
+	// Validate dataType parameter
+	if dataType == "" {
+		http.Error(w, "Data type is required", http.StatusBadRequest)
+		return
+	}
+
 	searchTerm := r.URL.Query().Get("q")
 
 	// Handle test mode
