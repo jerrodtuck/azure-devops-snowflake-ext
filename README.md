@@ -29,12 +29,12 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
 ### Backend Setup
 
 1. Navigate to the backend directory:
-   `ash
+   ```bash
    cd backend
-   `
+   ```
 
 2. Copy .env.example to .env and configure:
-   `
+   ```
    SNOWFLAKE_ACCOUNT=your-account
    SNOWFLAKE_USER=your-user
    SNOWFLAKE_PASSWORD=your-password
@@ -42,53 +42,72 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
    SNOWFLAKE_SCHEMA=your-schema
    SNOWFLAKE_WAREHOUSE=your-warehouse
    SNOWFLAKE_ROLE=your-role
-   `
+   ```
 
 3. Run the server:
-   `ash
+   ```bash
    go run main.go loadenv.go
-   `
+   ```
 
 ### Extension Setup
 
 1. Navigate to the extension directory:
-   `ash
+   ```bash
    cd extension
-   `
+   ```
 
 2. Install dependencies:
-   `ash
+   ```bash
    npm install
-   `
+   ```
 
 3. Build the extension:
-   `ash
+   ```bash
    npm run build
-   `
+   ```
 
 4. Package for Azure DevOps:
-   `ash
+   ```bash
    npm run package
-   `
+   ```
 
 ## Development
 
 ### Backend Development
-`ash
+```bash
 cd backend
 go run main.go loadenv.go config.go security.go endpoints.go
-`
+```
 
 ### Extension Development
-`ash
+```bash
 cd extension
 npm start
-`
+```
 
 ## Deployment
 
-See [docs/](docs/) for detailed deployment guides.
+### Local Development
+See [docs/](docs/) for detailed development guides.
 
-## License
+### Azure Deployment Options
 
-[Your License]
+The backend can be deployed to Azure using several approaches:
+
+- **Azure Container Instances (ACI)** - Simple container deployment
+- **Azure App Service** - Managed platform with built-in scaling
+- **Azure Kubernetes Service (AKS)** - Full container orchestration
+- **Azure Container Apps** - Serverless container platform
+
+### Docker Deployment
+
+Docker configuration files are available in `backend/deployments/`:
+
+- `Dockerfile` - Container image definition
+- `docker-compose.yml` - Multi-container setup with dependencies
+
+To deploy with Docker:
+```bash
+cd backend/deployments
+docker-compose up -d
+```
