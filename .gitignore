@@ -9,6 +9,7 @@ build/
 # IDE
 .vscode/
 .idea/
+.claude/
 *.suo
 *.user
 *.sln.docstates
@@ -54,3 +55,4 @@ coverage/
 backend/config.json
 backend/configs/config.json
 backend/bin/
+
