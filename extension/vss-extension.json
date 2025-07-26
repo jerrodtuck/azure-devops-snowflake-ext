@@ -2,10 +2,23 @@
   "manifestVersion": 1,
   "id": "snowflake-dropdown-react",
   "publisher": "jerrodtuck",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "name": "Snowflake Dropdown",
-  "description": "Base implementation of a searchable dropdown that loads data from Snowflake",
-  "public": false,
+  "description": "Base implementation of a searchable dropdown that loads data from Snowflake. You will need to review the README.md file for instructions on how to use the extension.",
+  "public": true,
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/jerrodtuck/azure-devops-snowflake-ext"
+  },
+  "branding": {
+    "color": "rgb(220, 235, 252)",
+    "theme": "light"
+  },
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  },
   "categories": ["Azure Boards"],
   "icons": {
     "default": "images/sf.png"

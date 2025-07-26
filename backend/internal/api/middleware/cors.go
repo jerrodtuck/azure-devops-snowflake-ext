@@ -9,7 +9,6 @@ import (
 
 // SetupCORS configures CORS middleware for Azure DevOps
 func SetupCORS() *cors.Cors {
-func SetupCORS() *cors.Cors {
     // Default Azure DevOps origins (used when CORS_ORIGINS is not set)
     defaultOrigins := []string{
         "https://dev.azure.com",
@@ -29,9 +28,6 @@ func SetupCORS() *cors.Cors {
             corsOrigins[i] = strings.TrimSpace(origin)
         }
     }
-
-    // ... rest of SetupCORS using corsOrigins ...
-}
 
 	return cors.New(cors.Options{
 		AllowOriginFunc: func(origin string) bool {
