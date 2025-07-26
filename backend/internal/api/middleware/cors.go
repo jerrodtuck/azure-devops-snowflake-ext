@@ -9,18 +9,29 @@ import (
 
 // SetupCORS configures CORS middleware for Azure DevOps
 func SetupCORS() *cors.Cors {
-	corsOrigins := []string{
-		"https://dev.azure.com",
-		"https://*.visualstudio.com",
-		"https://*.gallery.vsassets.io",    // Azure DevOps extension gallery
-		"https://*.gallerycdn.vsassets.io", // Azure DevOps extension gallery CDN
-		"http://localhost:*",               // For testing
-	}
+func SetupCORS() *cors.Cors {
+    // Default Azure DevOps origins (used when CORS_ORIGINS is not set)
+    defaultOrigins := []string{
+        "https://dev.azure.com",
+        "https://*.visualstudio.com",
+        "https://*.gallery.vsassets.io",    // Azure DevOps extension gallery
+        "https://*.gallerycdn.vsassets.io", // Azure DevOps extension gallery CDN
+        "http://localhost:*",               // For testing
+    }
 
-	// Allow custom CORS origins from environment
-	if customOrigins := os.Getenv("CORS_ORIGINS"); customOrigins != "" {
-		corsOrigins = strings.Split(customOrigins, ",")
-	}
+    corsOrigins := defaultOrigins
+
+    // Allow custom CORS origins from environment
+    if customOrigins := os.Getenv("CORS_ORIGINS"); customOrigins != "" {
+        corsOrigins = strings.Split(customOrigins, ",")
+        // Trim whitespace from each origin
+        for i, origin := range corsOrigins {
+            corsOrigins[i] = strings.TrimSpace(origin)
+        }
+    }
+
+    // ... rest of SetupCORS using corsOrigins ...
+}
 
 	return cors.New(cors.Options{
 		AllowOriginFunc: func(origin string) bool {
