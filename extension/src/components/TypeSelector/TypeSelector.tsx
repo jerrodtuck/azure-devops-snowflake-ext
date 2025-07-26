@@ -19,7 +19,7 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
     return <div className="type-selector-loading">Loading data types...</div>;
   }
 
-  if (dataTypes.length === 0) {
+  if (!Array.isArray(dataTypes) || dataTypes.length === 0) {
     return null;
   }
 
@@ -30,7 +30,7 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
 
   return (
     <div className={`type-selector ${className}`} role="radiogroup" aria-label="Data type selector">
-      {dataTypes.map((type) => (
+      {Array.isArray(dataTypes) && dataTypes.map((type) => (
         <label
           key={type.id}
           className={`type-selector-label ${disabled ? 'disabled' : ''}`}

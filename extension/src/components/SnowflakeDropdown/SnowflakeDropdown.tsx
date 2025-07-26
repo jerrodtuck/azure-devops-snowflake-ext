@@ -55,9 +55,9 @@ export const SnowflakeDropdown: React.FC<SnowflakeDropdownProps>= ({
 
     const { highlightedIndex } = useKeyboardNavigation({
         isOpen: state.isOpen,
-        itemsCount: data.length,
+        itemsCount: Array.isArray(data) ? data.length : 0,
         onSelect: (index: number) => {
-          if (data[index]) {
+          if (Array.isArray(data) && data[index]) {
             selectItem(data[index].value, data[index].label);
           }
         },
@@ -122,7 +122,7 @@ export const SnowflakeDropdown: React.FC<SnowflakeDropdownProps>= ({
     };
 
     const handleFocus = () => {
-        if (state.searchTerm.length >= minSearchLength && data.length > 0) {
+        if (state.searchTerm.length >= minSearchLength && Array.isArray(data) && data.length > 0) {
             setState(prev => ({ ...prev, isOpen: true }));
         }
     };

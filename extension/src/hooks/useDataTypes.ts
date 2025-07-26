@@ -31,7 +31,8 @@ export function useDataTypes(apiUrl?: string): UseDataTypesReturn {
         }
 
         const data = await response.json();
-        setDataTypes(data.dataTypes || []);
+        const dataTypes = data.dataTypes || [];
+        setDataTypes(Array.isArray(dataTypes) ? dataTypes : []);
         setDefaultType(data.defaultType || 'cc');
         setError(null);
       } catch (err) {

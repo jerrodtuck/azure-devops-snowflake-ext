@@ -87,13 +87,14 @@ export function useSnowflakeData({
         const result = await response.json();
         
         const items = result.data || result || [];
+        const validItems = Array.isArray(items) ? items : [];
         
         cache.set(cacheKey, {
-          data: items,
+          data: validItems,
           timestamp: Date.now(),
         });
 
-        setData(items);
+        setData(validItems);
         setError(null);
       } catch (err) {
         if (err instanceof Error && err.name === 'AbortError') {

@@ -23,7 +23,7 @@ export const ResultsList: React.FC<ResultsListProps> = ({
     if (loading) return 'loading';
     if (error) return 'error';
     if (searchTerm.length < minSearchLength) return 'too-short';
-    if (items.length === 0) return 'no-results';
+    if (!Array.isArray(items) || items.length === 0) return 'no-results';
     return 'results';
   };
 
@@ -65,7 +65,7 @@ export const ResultsList: React.FC<ResultsListProps> = ({
 
         {currentState === 'results' && (
           <>
-            {items.map((item, index) => (
+            {Array.isArray(items) && items.map((item, index) => (
               <ResultItem
                 key={item.value}
                 item={item}
@@ -78,7 +78,7 @@ export const ResultsList: React.FC<ResultsListProps> = ({
         )}
       </div>
 
-      {currentState === 'results' && items.length > 0 && (
+      {currentState === 'results' && Array.isArray(items) && items.length > 0 && (
         <div className="keyboard-hint">
           <span>↑↓ Navigate</span>
           <span>Enter Select</span>
