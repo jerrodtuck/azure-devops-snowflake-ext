@@ -1,0 +1,72 @@
+{
+  "name": "snowflake-extension",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Azure DevOps extension for Snowflake dropdown with React/TypeScript",
+  "dependencies": {
+    "azure-devops-extension-sdk": "^4.0.2",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.126",
+    "@types/react": "^16.8.0",
+    "@types/react-dom": "^16.8.0",
+    "@types/webpack": "^5.28.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.33.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "html-webpack-plugin": "^5.5.0",
+    "rimraf": "^4.1.2",
+    "style-loader": "^3.3.1",
+    "tfx-cli": "^0.16.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rimraf dist",
+    "package": "npm run build && tfx extension create --manifest-globs vss-extension.json --output-path dist",
+    "watch": "webpack --mode development --watch"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+    ],
+    "plugins": [
+      "@typescript-eslint",
+      "react",
+      "react-hooks"
+    ],
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "settings": {
+      "react": {
+        "version": "16.8"
+      }
+    },
+    "rules": {
+      "react/prop-types": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off"
+    }
+  }
+}

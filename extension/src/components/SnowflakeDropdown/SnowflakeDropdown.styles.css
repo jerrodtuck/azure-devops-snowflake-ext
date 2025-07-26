@@ -1,0 +1,12 @@
+  /* SnowflakeDropdown.styles.css */
+  .snowflake-dropdown {
+    width: 100%;
+    min-width: 300px;
+  }
+
+  .dropdown-container {
+    position: relative;
+    width: 100%;
+    /* Allow overflow for dropdown */
+    overflow: visible;
+  }
