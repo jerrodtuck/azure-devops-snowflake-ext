@@ -13,50 +13,50 @@ import (
 
 // SetupRouter configures and returns the HTTP router
 func SetupRouter() http.Handler {
-	router := mux.NewRouter()
+    router := mux.NewRouter()
 
-	// API routes with subrouter for better organization
-	api := router.PathPrefix("/api").Subrouter()
+    // API routes with subrouter for better organization
+    api := router.PathPrefix("/api").Subrouter()
 
-	// Health check
-	api.HandleFunc("/health", handlers.HandleHealth).Methods("GET", "OPTIONS")
+    // Health check
+    api.HandleFunc("/health", handlers.HandleHealth).Methods("GET", "OPTIONS")
 
-	// Dynamic configuration endpoints
-	api.HandleFunc("/config", handlers.HandleGetConfig).Methods("GET", "OPTIONS")
-	api.HandleFunc("/search/{type}", handlers.HandleSearch).Methods("GET", "OPTIONS")
-	api.HandleFunc("/types", handlers.HandleGetDataTypes).Methods("GET", "OPTIONS")
+    // Dynamic configuration endpoints
+    api.HandleFunc("/config", handlers.HandleGetConfig).Methods("GET", "OPTIONS")
+    api.HandleFunc("/search/{type}", handlers.HandleSearch).Methods("GET", "OPTIONS")
+    api.HandleFunc("/types", handlers.HandleGetDataTypes).Methods("GET", "OPTIONS")
 
-	// Legacy endpoints for backward compatibility
-	api.HandleFunc("/dropdown/{type}", handlers.HandleDropdownData).Methods("GET", "OPTIONS")
-	api.HandleFunc("/dropdown", handlers.HandleDropdownData).Methods("GET", "OPTIONS")
+    // Legacy endpoints for backward compatibility
+    api.HandleFunc("/dropdown/{type}", handlers.HandleDropdownData).Methods("GET", "OPTIONS")
+    api.HandleFunc("/dropdown", handlers.HandleDropdownData).Methods("GET", "OPTIONS")
 
-	// Dynamic search endpoint (POST for custom queries)
-	api.HandleFunc("/dynamic-search", handlers.HandleDynamicSearch).Methods("POST", "OPTIONS")
+    // Dynamic search endpoint (POST for custom queries)
+    api.HandleFunc("/dynamic-search", handlers.HandleDynamicSearch).Methods("POST", "OPTIONS")
 
-	// Apply middleware stack
-	var handler http.Handler = router
+    // Apply middleware stack
+    var handler http.Handler = router
 
-	// Apply authentication middleware if configured
-	if shouldUseSimpleAuth() {
-		log.Printf("Simple API Key authentication enabled")
-		handler = middleware.SimpleAPIKeyMiddleware()(handler)
-	} else if shouldUseAdvancedAuth() {
-		log.Printf("Advanced authentication enabled")
-		secConfig := config.LoadSecurityConfig()
-		handler = middleware.AuthMiddleware(secConfig)(handler)
-	}
+    // Apply CORS middleware first to handle preflight requests
+    corsHandler := middleware.SetupCORS()
+    handler = corsHandler.Handler(handler)
 
-	// Apply CORS middleware
-	corsHandler := middleware.SetupCORS()
-	handler = corsHandler.Handler(handler)
+    // Apply authentication middleware if configured
+    if shouldUseSimpleAuth() {
+        log.Printf("Simple API Key authentication enabled")
+        handler = middleware.SimpleAPIKeyMiddleware()(handler)
+    } else if shouldUseAdvancedAuth() {
+        log.Printf("Advanced authentication enabled")
+        secConfig := config.LoadSecurityConfig()
+        handler = middleware.AuthMiddleware(secConfig)(handler)
+    }
 
-	// Apply rate limiting if configured
-	if rateLimit := getRateLimit(); rateLimit > 0 {
-		log.Printf("Rate limiting enabled: %d requests per minute", rateLimit)
-		handler = middleware.RateLimitMiddleware(rateLimit)(handler)
-	}
+    // Apply rate limiting if configured
+    if rateLimit := getRateLimit(); rateLimit > 0 {
+        log.Printf("Rate limiting enabled: %d requests per minute", rateLimit)
+        handler = middleware.RateLimitMiddleware(rateLimit)(handler)
+    }
 
-	return handler
+    return handler
 }
 
 // shouldUseSimpleAuth checks if simple API key auth should be used
