@@ -9,10 +9,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gorilla/mux"
 	"snowflake-dropdown-api/internal/config"
 	"snowflake-dropdown-api/internal/database"
 	"snowflake-dropdown-api/internal/models"
+
+	"github.com/gorilla/mux"
 )
 
 // HandleSearch performs a search using the dynamic configuration
@@ -125,15 +126,6 @@ func HandleDynamicSearch(w http.ResponseWriter, r *http.Request) {
 			Cached:     false,
 		},
 	})
-}
-
-// Legacy handlers for backward compatibility
-func HandleDropdownData(w http.ResponseWriter, r *http.Request) {
-	HandleSearch(w, r)
-}
-
-func HandleSearchData(w http.ResponseWriter, r *http.Request) {
-	HandleSearch(w, r)
 }
 
 // handleMockSearch returns mock data for testing

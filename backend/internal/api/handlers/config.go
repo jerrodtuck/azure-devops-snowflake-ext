@@ -43,7 +43,6 @@ func HandleGetConfig(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-}
 
 // HandleGetDataTypes returns available data types
 func HandleGetDataTypes(w http.ResponseWriter, r *http.Request) {

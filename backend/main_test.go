@@ -2,15 +2,18 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
+
+	"snowflake-dropdown-api/internal/models"
 
 	"github.com/gorilla/mux"
 )
 
 // Mock data for testing without Snowflake connection
-var mockCCData = []DropdownItem{
+var mockCCData = []models.DropdownItem{
 	{Value: "CC001", Label: "CC001 - Marketing SHOWBOAT"},
 	{Value: "CC002", Label: "CC002 - Engineering"},
 	{Value: "CC003", Label: "CC003 - Sales SHOWBOAT"},
@@ -18,7 +21,7 @@ var mockCCData = []DropdownItem{
 	{Value: "CC005", Label: "CC005 - HR Resources"},
 }
 
-var mockWBSData = []DropdownItem{
+var mockWBSData = []models.DropdownItem{
 	{Value: "WBS001", Label: "WBS001 - Project BONSAI Alpha"},
 	{Value: "WBS002", Label: "WBS002 - Project Beta"},
 	{Value: "WBS003", Label: "WBS003 - BONSAI Development"},
@@ -28,21 +31,39 @@ var mockWBSData = []DropdownItem{
 
 // Test mode handler
 func handleMockSearch(w http.ResponseWriter, r *http.Request) {
+	// Validate request method
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	vars := mux.Vars(r)
 	dataType := vars["type"]
-	searchTerm := r.URL.Query().Get("q")
 
-	var results []DropdownItem
-	var sourceData []DropdownItem
+	// Validate dataType parameter
+	if dataType == "" {
+		http.Error(w, "Missing type parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Sanitize and validate search term
+	searchTerm := strings.TrimSpace(r.URL.Query().Get("q"))
+	if len(searchTerm) > 100 { // Reasonable limit
+		http.Error(w, "Search term too long", http.StatusBadRequest)
+		return
+	}
+
+	var results []models.DropdownItem
+	var sourceData []models.DropdownItem
 
 	// Select source data based on type
-	switch dataType {
+	switch strings.ToLower(dataType) {
 	case "cc":
 		sourceData = mockCCData
 	case "wbs":
 		sourceData = mockWBSData
 	default:
-		http.Error(w, "Unknown type", http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("Unknown type: %s", dataType), http.StatusBadRequest)
 		return
 	}
 
@@ -58,9 +79,9 @@ func handleMockSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return response
-	response := DropdownResponse{
+	response := models.DropdownResponse{
 		Data: results,
-		Metadata: Metadata{
+		Metadata: models.Metadata{
 			ExportedAt: time.Now().UTC(),
 			RowCount:   len(results),
 			Source:     dataType + "_mock",
@@ -69,7 +90,14 @@ func handleMockSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 // Helper function for case-insensitive contains
@@ -85,10 +113,19 @@ func setupTestMode(router *mux.Router) {
 	// Add test data endpoint
 	router.HandleFunc("/api/test/data", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		response := map[string]interface{}{
 			"cc_data":  mockCCData,
 			"wbs_data": mockWBSData,
 			"message":  "Test mode active - using mock data",
-		})
+		}
+
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			http.Error(w, "Failed to encode test data response", http.StatusInternalServerError)
+			return
+		}
 	}).Methods("GET")
 }

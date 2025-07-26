@@ -89,7 +89,6 @@ func logEndpoints() {
 	log.Printf("  GET /api/config - Get data types configuration")
 	log.Printf("  GET /api/search/{type} - Search with dynamic data type")
 	log.Printf("  GET /api/types - List available data types")
-	log.Printf("  GET /api/dropdown/{type} - Legacy endpoint (redirects to search)")
 	log.Printf("  POST /api/dynamic-search - Custom query endpoint")
 	log.Printf("")
 	log.Printf("Dynamic configuration loaded from: %s", getConfigFile())
