@@ -1,0 +1,41 @@
+{
+  "dataTypes": [
+    {
+      "id": "cc",
+      "name": "Cost Centers",
+      "description": "Company cost centers",
+      "query": "SELECT id as value, id || ' - ' || name as label FROM your_database.your_schema.cost_centers WHERE (? = '' OR UPPER(description) LIKE UPPER('%' || ? || '%') OR UPPER(id) LIKE UPPER('%' || ? || '%') OR UPPER(name) LIKE UPPER('%' || ? || '%')) ORDER BY id LIMIT 100",
+      "searchFields": ["description", "id", "name"],
+      "icon": "💰",
+      "enabled": true
+    },
+    {
+      "id": "wbs",
+      "name": "WBS Elements",
+      "description": "Work Breakdown Structure elements",
+      "query": "SELECT code as value, code || ' - ' || description as label FROM your_database.your_schema.wbs_elements WHERE (? = '' OR UPPER(description) LIKE UPPER('%' || ? || '%') OR UPPER(code) LIKE UPPER('%' || ? || '%')) ORDER BY code LIMIT 100",
+      "searchFields": ["description", "code"],
+      "icon": "📊",
+      "enabled": true
+    },
+    {
+      "id": "dept",
+      "name": "Departments",
+      "description": "Company departments",
+      "query": "SELECT dept_code as value, dept_code || ' - ' || dept_name as label FROM your_database.your_schema.departments WHERE (? = '' OR UPPER(dept_name) LIKE UPPER('%' || ? || '%') OR UPPER(dept_code) LIKE UPPER('%' || ? || '%')) ORDER BY dept_code LIMIT 100",
+      "searchFields": ["dept_name", "dept_code"],
+      "icon": "🏢",
+      "enabled": false
+    }
+  ],
+  "defaultDataType": "cc",
+  "cacheSettings": {
+    "enabled": true,
+    "ttlMinutes": 60
+  },
+  "searchSettings": {
+    "minSearchLength": 2,
+    "debounceMs": 300,
+    "maxResults": 100
+  }
+}
