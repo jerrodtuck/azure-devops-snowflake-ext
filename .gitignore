@@ -49,3 +49,5 @@ coverage/
 *.cover
 *.coverage
 .nyc_output/
+
+/backend/config.json

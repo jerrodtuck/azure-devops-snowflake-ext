@@ -5,7 +5,7 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
 ## Project Structure
 
 - **extension/** - React-based Azure DevOps extension
-- **backend/go-backend/** - Go API server that connects to Snowflake
+- **backend/** - Go API server that connects to Snowflake
 - **docs/** - Documentation and guides
 
 ## Features
@@ -30,7 +30,7 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
 
 1. Navigate to the backend directory:
    `ash
-   cd backend/go-backend
+   cd backend
    `
 
 2. Copy .env.example to .env and configure:
@@ -75,8 +75,8 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
 
 ### Backend Development
 `ash
-cd backend/go-backend
-go run main.go loadenv.go
+cd backend
+go run main.go loadenv.go config.go security.go endpoints.go
 `
 
 ### Extension Development
