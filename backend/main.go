@@ -375,6 +375,7 @@ func main() {
 		"https://dev.azure.com",
 		"https://*.visualstudio.com",
 		"https://*.gallery.vsassets.io", // Azure DevOps extension gallery
+		"https://*.gallerycdn.vsassets.io", // Azure DevOps extension gallery CDN
 		"http://localhost:*", // For testing
 	}
 
@@ -386,7 +387,7 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowOriginFunc: func(origin string) bool {
 			// Allow any origin from Azure DevOps gallery
-			if strings.Contains(origin, ".gallery.vsassets.io") {
+			if strings.Contains(origin, ".gallery.vsassets.io") || strings.Contains(origin, ".gallerycdn.vsassets.io") {
 				return true
 			}
 			// Allow any origin from Visual Studio
