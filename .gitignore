@@ -50,4 +50,7 @@ coverage/
 *.coverage
 .nyc_output/
 
-/backend/config.json
+# Backend configuration files
+backend/config.json
+backend/configs/config.json
+backend/bin/
