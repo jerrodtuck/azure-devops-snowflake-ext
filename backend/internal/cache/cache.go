@@ -29,17 +29,17 @@ func (c *Cache) Get(key string) (models.DropdownResponse, bool) {
 
 // Set stores data in cache
 func (c *Cache) Set(key string, value models.DropdownResponse) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	c.data[key] = value
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    c.data[key] = cacheItem{
+        value:     value,
+        expiresAt: time.Now().Add(c.expiration),
+    }
 
-	// Simple cache cleanup after expiration
-	go func() {
-		time.Sleep(c.expiration)
-		c.mu.Lock()
-		delete(c.data, key)
-		c.mu.Unlock()
-	}()
+    // Start cleanup goroutine once
+    c.cleanupOnce.Do(func() {
+        go c.cleanupExpired()
+    })
 }
 
 // Clear removes all cached data
