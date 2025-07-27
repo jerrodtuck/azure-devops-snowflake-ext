@@ -1,6 +1,6 @@
 # Azure DevOps Snowflake Extension
 
-A modern Azure DevOps extension that provides searchable dropdown controls populated with data from Snowflake.
+An Azure DevOps extension that provides searchable dropdown controls populated with data from Snowflake.It can be any query really but had a real world issue of solving how to relate cost centers to DevOps Boards. Extend it to perform SQL queries or any Rest API, etc.
 
 ## Project Structure
 
@@ -46,7 +46,7 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
 
 3. Run the server:
    ```bash
-   go run main.go loadenv.go
+   go run ./cmd/server
    ```
 
 ### Extension Setup
@@ -76,7 +76,7 @@ A modern Azure DevOps extension that provides searchable dropdown controls popul
 ### Backend Development
 ```bash
 cd backend
-go run main.go loadenv.go config.go security.go endpoints.go
+go run ./cmd/server
 ```
 
 ### Extension Development
@@ -109,5 +109,5 @@ Docker configuration files are available in `backend/deployments/`:
 To deploy with Docker:
 ```bash
 cd backend/deployments
-docker-compose up -d
+docker compose up -d
 ```
